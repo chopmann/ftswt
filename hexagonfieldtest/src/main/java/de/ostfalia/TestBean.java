@@ -1,5 +1,6 @@
 package de.ostfalia;
 
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,7 +17,7 @@ import de.ostfalia.hexagonfield.OnClickListener;
 
 @Named
 @ViewScoped
-public class TestBean implements OnClickListener {
+public class TestBean implements OnClickListener, Serializable {
 
 	private HexagonField hex;
 	
