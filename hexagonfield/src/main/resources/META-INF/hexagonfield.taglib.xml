@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<facelet-taglib version="2.0"
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd">
+
+    <namespace>http://de.ostfalia/hexagonfield</namespace>
+
+	<composite-library-name>hexagonfield</composite-library-name>
+    <tag>
+        <tag-name>hexagonfield</tag-name>
+        <component>
+            <component-type>de.ostfalia.HexagonField</component-type>
+            <renderer-type>de.ostfalia.HexagonFieldRenderer</renderer-type>
+            <handler-class>de.ostfalia.hexagonfield.HexagonFieldTagHandler</handler-class>
+        </component>
+    </tag>
+</facelet-taglib>

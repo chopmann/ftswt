@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"      
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:o="http://de.ostfalia/hexagonfield">
+ 
+    <h:head>
+        <title>Hello Hexagon</title>
+    </h:head>
+    <h:body>
+    	<h:form>
+    	   <o:hexagonfield id="test" width="800" height="600" size="40" fields="#{testBean.fields}"
+    	   		onClickListener="#{testBean}" binding="#{testBean.hex}"></o:hexagonfield>
+		</h:form>
+		<h:form>
+			<h:inputText id="posX" value="#{testBean.posX}" />
+			<h:inputText id="posY" value="#{testBean.posY}" />
+			<h:commandButton id="addField" value="Add Field" action="#{testBean.addField()}" >
+				<f:ajax execute="addField posX posY" render=":selectedTable"></f:ajax>
+			</h:commandButton>
+			<h:commandButton id="serverTest" value="Remove" action="#{testBean.removeField}" >
+				<f:ajax execute="serverTest posX posY" render=":selectedTable"></f:ajax>
+			</h:commandButton>
+    	</h:form>
+    	
+    	<h:dataTable id="selectedTable" value="#{testBean.hex.selectedFields}" var="field">
+    		<h:column>
+    			<f:facet name="header">Selected Fields</f:facet>
+    			#{field.x} / #{field.y}
+    		</h:column>
+    	</h:dataTable>
+    </h:body>
+</html>
