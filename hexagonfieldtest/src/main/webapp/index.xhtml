@@ -11,7 +11,7 @@
     </h:head>
     <h:body>
     	<h:form>
-    	   <o:hexagonfield id="test" width="800" height="600" size="40" fields="#{testBean.fields}"
+    	   <o:hexagonfield id="test" width="800" height="600" size="40" fields="#{testBean.tiles}"
     	   		onClickListener="#{testBean}" binding="#{testBean.hex}"></o:hexagonfield>
 		</h:form>
 		<h:form>
@@ -25,7 +25,7 @@
 			</h:commandButton>
     	</h:form>
     	
-    	<h:dataTable id="selectedTable" value="#{testBean.hex.selectedFields}" var="field">
+    	<h:dataTable id="selectedTable" value="#{testBean.hex.selectedTiles}" var="field">
     		<h:column>
     			<f:facet name="header">Selected Fields</f:facet>
     			#{field.x} / #{field.y}

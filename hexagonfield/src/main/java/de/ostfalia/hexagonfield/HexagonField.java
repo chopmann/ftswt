@@ -5,11 +5,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.enterprise.event.Event;
-import javax.enterprise.event.Observes;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UIComponentBase;
-import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -29,19 +26,19 @@ public class HexagonField extends UIComponentBase {
         onClickListener
     }
 	
-	private Field[][] fields;
+	private Tile[][] tiles;
 	private int size = -1;
 	private int width = -1;
 	private int height = -1;
 	
 	private boolean initDone;
 	
-	private List<Field> selectedFields;
+	private List<Tile> selectedTiles;
 	
 	private OnClickListener onClickListener;
 	
 	public HexagonField() {
-		selectedFields = new ArrayList<Field>();
+		selectedTiles = new ArrayList<Tile>();
 	}
 
 	/**
@@ -49,7 +46,7 @@ public class HexagonField extends UIComponentBase {
 	 * Sets the values and send the fields with background image to the client side.
 	 */
 	protected void init() {
-		fields = getFields();
+		tiles = getTiles();
 		size = getSize();
 		width = getWidth();
 		height = getHeight();
@@ -65,12 +62,12 @@ public class HexagonField extends UIComponentBase {
 		 */
 		JsonArrayBuilder arrayBuilder1 = Json.createArrayBuilder();
 		JsonArrayBuilder arrayBuilder2;
-		for(int y = 0; y < getFields().length; y++) {
+		for(int y = 0; y < getTiles().length; y++) {
 			arrayBuilder2 = Json.createArrayBuilder();
-			for(int x = 0; x < getFields()[y].length; x++) {
+			for(int x = 0; x < getTiles()[y].length; x++) {
                 arrayBuilder2.add(Json.createObjectBuilder()
-                		.add("background", getFields()[y][x].getBackgroundImg())
-                		.add("foreground", getFields()[y][x].getForegroundImg()).build());
+                		.add("background", getTiles()[y][x].getBackgroundImg())
+                		.add("foreground", getTiles()[y][x].getForegroundImg()).build());
 			}
 			arrayBuilder1.add(arrayBuilder2.build());
 		}
@@ -83,7 +80,7 @@ public class HexagonField extends UIComponentBase {
 
 	protected void getContextMenu(int x, int y) {
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-		for(String str : fields[y][x].getContextMenu()) {
+		for(String str : tiles[y][x].getContextMenu()) {
 			arrayBuilder.add(Json.createObjectBuilder()
             		.add("text", str).build());
 		}
@@ -104,13 +101,13 @@ public class HexagonField extends UIComponentBase {
 	 */
 	protected void clicked(int x, int y) {
 		try {
-	        if(!fields[y][x].isSelectable()) {
-	            selectedFields.add(fields[y][x]);
+	        if(!tiles[y][x].isSelectable()) {
+	            selectedTiles.add(tiles[y][x]);
 	            removeFieldFromSelected(x, y);
 	            return;
 	        }
-			if(!selectedFields.contains(fields[y][x])) {
-				selectedFields.add(fields[y][x]);
+			if(!selectedTiles.contains(tiles[y][x])) {
+				selectedTiles.add(tiles[y][x]);
 				LOGGER.log(Level.INFO, "Clicked " + x + " / " + y);
 			}
 			/*if(onClickListener != null)
@@ -129,8 +126,8 @@ public class HexagonField extends UIComponentBase {
 	 * @return Returns true if the field could be set and false when the field was already set.
 	 */
 	public boolean addFieldToSelected(int x, int y) {
-		if(!selectedFields.contains(getFields()[y][x])) {
-			selectedFields.add(getFields()[y][x]);
+		if(!selectedTiles.contains(getTiles()[y][x])) {
+			selectedTiles.add(getTiles()[y][x]);
 			JsonObject json = Json.createObjectBuilder()
 					.add(HexagonFieldJsonKey.EVENT.getKey(), HexagonFieldEvent.ADD_SELECTED.getKey())
 	    			.add(HexagonFieldJsonKey.FIELD_X.getKey(), x)
@@ -150,8 +147,8 @@ public class HexagonField extends UIComponentBase {
      * @return Returns true if the field could be removed and false when the field was already removed.
      */
     public boolean removeFieldFromSelected(int x, int y) {
-        if(selectedFields.contains(fields[y][x])) {
-            selectedFields.remove(fields[y][x]);
+        if(selectedTiles.contains(tiles[y][x])) {
+            selectedTiles.remove(tiles[y][x]);
             JsonObject json = Json.createObjectBuilder()
                     .add(HexagonFieldJsonKey.EVENT.getKey(), HexagonFieldEvent.REMOVE_SELECTED.getKey())
                     .add(HexagonFieldJsonKey.FIELD_X.getKey(), x)
@@ -171,7 +168,7 @@ public class HexagonField extends UIComponentBase {
 	 * @param path String image path
 	 */
 	public void changeBackground(int x, int y, String path) {
-		fields[y][x].setBackgroundImg(path);
+		tiles[y][x].setBackgroundImg(path);
 		JsonObject json = Json.createObjectBuilder()
 				.add(HexagonFieldJsonKey.EVENT.getKey(), HexagonFieldEvent.CHANGE_FIELD_BG.getKey())
     			.add(HexagonFieldJsonKey.FIELD_X.getKey(), x)
@@ -212,12 +209,12 @@ public class HexagonField extends UIComponentBase {
         getStateHelper().put(PropertyKeys.size, size);
     }
     
-	public Field[][] getFields() {
-        return (Field[][]) getStateHelper().eval(PropertyKeys.fields, null);
+	public Tile[][] getTiles() {
+        return (Tile[][]) getStateHelper().eval(PropertyKeys.fields, null);
     }
 
-	public void setFields(Field[][] fields) {
-        getStateHelper().put(PropertyKeys.fields, fields);
+	public void setTiles(Tile[][] tiles) {
+        getStateHelper().put(PropertyKeys.fields, tiles);
     }
     
 	public OnClickListener getOnClickListener() {
@@ -247,11 +244,11 @@ public class HexagonField extends UIComponentBase {
 		this.initDone = initDone;
 	}
 
-	public List<Field> getSelectedFields() {
-		return selectedFields;
+	public List<Tile> getSelectedTiles() {
+		return selectedTiles;
 	}
 
-	public void setSelectedFields(List<Field> selectedFields) {
-		this.selectedFields = selectedFields;
+	public void setSelectedTiles(List<Tile> selectedTiles) {
+		this.selectedTiles = selectedTiles;
 	}
 }

@@ -10,7 +10,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import de.ostfalia.hexagonfield.Field;
+import de.ostfalia.hexagonfield.Tile;
 import de.ostfalia.hexagonfield.FieldEvent;
 import de.ostfalia.hexagonfield.HexagonField;
 import de.ostfalia.hexagonfield.OnClickListener;
@@ -21,7 +21,7 @@ public class TestBean implements OnClickListener, Serializable {
 
 	private HexagonField hex;
 	
-	private Field[][] fields;
+	private Tile[][] tiles;
 	
 	private String posX;
 	private String posY;
@@ -34,7 +34,7 @@ public class TestBean implements OnClickListener, Serializable {
 	
 	@PostConstruct
 	public void init() {
-		fields = fieldBean.getFields();
+		tiles = fieldBean.getTiles();
 		hex = new HexagonField();
 	}
 	
@@ -44,7 +44,7 @@ public class TestBean implements OnClickListener, Serializable {
 		try {
 			int x = Integer.parseInt(posX);
 			int y = Integer.parseInt(posY);
-			event.fire(fields[y][x].setSelectable(true));
+			event.fire(tiles[y][x].setSelectable(true));
 			//hex.addFieldToSelected(x, y);
 		} catch(NumberFormatException e) {
 			Logger.getAnonymousLogger().log(Level.SEVERE, "TestBean: Input is not an integer!");
@@ -55,7 +55,7 @@ public class TestBean implements OnClickListener, Serializable {
         try {
             int x = Integer.parseInt(posX);
             int y = Integer.parseInt(posY);
-            event.fire(fields[y][x].setSelectable(false));
+            event.fire(tiles[y][x].setSelectable(false));
             //hex.removeFieldFromSelected(x, y);
         } catch(NumberFormatException e) {
             Logger.getAnonymousLogger().log(Level.SEVERE, "TestBean: Input is not an integer!");
@@ -73,19 +73,22 @@ public class TestBean implements OnClickListener, Serializable {
 	@Override
 	public void onClick(int x, int y) {
 		Logger.getAnonymousLogger().log(Level.INFO, "TestBean: clicked " + x + " / " + y);
-		if(fields[y][x].getBackgroundImg().equals("resources/images/sand.jpg")) {
-			hex.changeBackground(x, y, "resources/images/grass.jpg");
-		} else {
+        System.out.println("Clicked");
+        if(tiles[y][x].getBackgroundImg().equals("resources/images/sand.jpg")) {
+            System.out.println("Iambatman");
+            hex.changeBackground(x, y, "resources/images/grass.jpg");
+        } else {
 			hex.changeBackground(x, y, "resources/images/sand.jpg");
-		}
+            System.out.println("robin");
+        }
 	}
 
-	public Field[][] getFields() {
-		return fields;
+	public Tile[][] getTiles() {
+		return tiles;
 	}
 
-	public void setFields(Field[][] fields) {
-		this.fields = fields;
+	public void setTiles(Tile[][] tiles) {
+		this.tiles = tiles;
 	}
 
 	public String getPosX() {

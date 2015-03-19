@@ -7,43 +7,43 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
-import de.ostfalia.hexagonfield.Field;
-import de.ostfalia.hexagonfield.SimpleField;
+import de.ostfalia.hexagonfield.Tile;
+import de.ostfalia.hexagonfield.SimpleTile;
 
 @Named
 @ApplicationScoped
 public class FieldBean {
 
-	private Field[][] fields;
+	private Tile[][] tiles;
 	
 	@PostConstruct
 	public void init() {
-		fields = new Field[30][30];
+		tiles = new Tile[30][30];
 		List<String> context = new ArrayList<>();
 		context.add("erster");
 		context.add("erster2");
-		for(int i = 0; i < fields.length; i++) {
-			for(int j = 0; j < fields[i].length; j++) {
-				fields[i][j] = new SimpleField(j, i);
-				fields[i][j].setSelectable(true);
+		for(int i = 0; i < tiles.length; i++) {
+			for(int j = 0; j < tiles[i].length; j++) {
+				tiles[i][j] = new SimpleTile(j, i);
+				tiles[i][j].setSelectable(true);
 				if(Math.random() > 0.5) {
-					fields[i][j].setBackgroundImg("resources/images/sand.jpg");
+					tiles[i][j].setBackgroundImg("resources/images/sand.jpg");
 				} else {
-					fields[i][j].setBackgroundImg("resources/images/grass.jpg");
-                    fields[i][j].setForegroundImg("resources/images/tank.png");
+					tiles[i][j].setBackgroundImg("resources/images/grass.jpg");
+                    tiles[i][j].setForegroundImg("resources/images/tank.png");
 				}
-				((SimpleField)fields[i][j]).setContextMenu(context);
+				((SimpleTile) tiles[i][j]).setContextMenu(context);
 				//fields[i][j].setSelectable(true);
 			}
 		}
 	}
 
-	public Field[][] getFields() {
-		return fields;
+	public Tile[][] getTiles() {
+		return tiles;
 	}
 
-	public void setFields(Field[][] fields) {
-		this.fields = fields;
+	public void setTiles(Tile[][] tiles) {
+		this.tiles = tiles;
 	}
 	
 }

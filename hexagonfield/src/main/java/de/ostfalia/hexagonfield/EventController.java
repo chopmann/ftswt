@@ -24,13 +24,13 @@ public class EventController {
 		switch (event.eventType) {
 		case ADD_SELECTED:
 			for(HexagonField field : hexagonfields) {
-				field.addFieldToSelected(event.field.getX(), event.field.getY());
+				field.addFieldToSelected(event.tile.getX(), event.tile.getY());
 			}
 			break;
 		case REMOVE_SELECTED:
 			for(HexagonField field : hexagonfields) {
 				System.out.println("remove");
-				field.removeFieldFromSelected(event.field.getX(), event.field.getY());
+				field.removeFieldFromSelected(event.tile.getX(), event.tile.getY());
 			}
 			break;
 		default:
