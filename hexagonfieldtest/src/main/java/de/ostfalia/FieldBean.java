@@ -7,8 +7,8 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
-import de.ostfalia.hexagonfield.Tile;
-import de.ostfalia.hexagonfield.SimpleTile;
+import de.ostfalia.tinypappe.Tile;
+import de.ostfalia.tinypappe.SimpleTile;
 
 @Named
 @ApplicationScoped

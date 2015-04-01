@@ -1,4 +1,4 @@
-package de.ostfalia.hexagonfield;
+package de.ostfalia.tinypappe;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
     @ResourceDependency(library = "javax.faces", name = "jsf.js", target = "head")
 }
 )
-@FacesRenderer(componentFamily = "de.ostfalia.HexagonField", rendererType = "de.ostfalia.HexagonFieldRenderer")
+@FacesRenderer(componentFamily = "de.ostfalia.Board", rendererType = "de.ostfalia.HexagonFieldRenderer")
 public class HexagonFieldRenderer extends Renderer {
 	
 	private static final Logger LOGGER = Logger.getLogger(HexagonFieldRenderer.class.getName());
@@ -35,33 +35,33 @@ public class HexagonFieldRenderer extends Renderer {
 		// Path for the websocket connection
 		String contextpath = ((HttpServletRequest)context.getExternalContext().getRequest()).getContextPath();
 		
-		HexagonField hexagonField = (HexagonField) component;
+		Board board = (Board) component;
 		ResponseWriter writer = context.getResponseWriter();
 		
 		// HTML5 Canvas
 		writer.startElement("canvas", component);
-		writer.writeAttribute("id", hexagonField.getId(), null);
-		writer.writeAttribute("width", hexagonField.getWidth(), null);
-		writer.writeAttribute("height", hexagonField.getHeight(), null);
+		writer.writeAttribute("id", board.getId(), null);
+		writer.writeAttribute("width", board.getWidth(), null);
+		writer.writeAttribute("height", board.getHeight(), null);
 		writer.writeAttribute("oncontextmenu", "return false", null);
 		writer.write("Browser unterstützt kein HTML5 Canvas");
 		writer.endElement("canvas");
 		
 		writer.startElement("div", component);
-		writer.writeAttribute("id", hexagonField.getId() + "_contextMenu", null);
+		writer.writeAttribute("id", board.getId() + "_contextMenu", null);
 		writer.startElement("table", component);
-		writer.writeAttribute("id", hexagonField.getId() + "_contextMenuTable", null);
+		writer.writeAttribute("id", board.getId() + "_contextMenuTable", null);
 		writer.writeAttribute("border", 0, null);
 		writer.writeAttribute("cellpadding", 0, null);
 		writer.writeAttribute("cellspacing", 0, null);
 		writer.writeAttribute("style", "border: thin solid #808080; cursor: default;", null);
-		writer.writeAttribute("bgcolor", "White", null);
+		writer.writeAttribute("bgcolor", "Red", null);
 		writer.endElement("table");
 		writer.endElement("div");
 		
 		// Script tag to initialize the JavaScript.
 		writer.startElement("script", component);
-		writer.write("window.onload = function() {new HexagonHandler('" + hexagonField.getId() + "', '" + contextpath + "');};\n");
+		writer.write("window.onload = function() {new HexagonHandler('" + board.getId() + "', '" + contextpath + "');};\n");
 		writer.endElement("script");
 	}
 }

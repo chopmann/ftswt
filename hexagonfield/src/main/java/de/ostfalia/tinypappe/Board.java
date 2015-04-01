@@ -1,4 +1,4 @@
-package de.ostfalia.hexagonfield;
+package de.ostfalia.tinypappe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +13,10 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 @FacesComponent("de.ostfalia.HexagonField")
-public class HexagonField extends UIComponentBase {
+public class Board extends UIComponentBase {
 
-	private static final Logger LOGGER = Logger.getLogger(HexagonField.class.getName());
-	public static final String COMPONENT_TYPE = "de.ostfalia.HexagonField";
+	private static final Logger LOGGER = Logger.getLogger(Board.class.getName());
+	public static final String COMPONENT_TYPE = "de.ostfalia.Board";
 	
 	private enum PropertyKeys {
         width,
@@ -37,12 +37,12 @@ public class HexagonField extends UIComponentBase {
 	
 	private OnClickListener onClickListener;
 	
-	public HexagonField() {
+	public Board() {
 		selectedTiles = new ArrayList<Tile>();
 	}
 
 	/**
-	 * Initialized the HexagonField.
+	 * Initialized the Board.
 	 * Sets the values and send the fields with background image to the client side.
 	 */
 	protected void init() {
@@ -74,7 +74,7 @@ public class HexagonField extends UIComponentBase {
 		
 		builder.add(HexagonFieldJsonKey.FIELDS.getKey(), arrayBuilder1.build());
 		JsonObject json = builder.build();
-		HexagonFieldController.getInstance().sendMessage(this, json.toString());
+		GameController.getInstance().sendMessage(this, json.toString());
 		
 	}
 
@@ -90,7 +90,7 @@ public class HexagonField extends UIComponentBase {
 		builder.add(HexagonFieldJsonKey.FIELD_X.getKey(), x);
 		builder.add(HexagonFieldJsonKey.FIELD_Y.getKey(), y);
 		JsonObject json = builder.build();
-		HexagonFieldController.getInstance().sendMessage(this, json.toString());
+		GameController.getInstance().sendMessage(this, json.toString());
 	}
 	
 	/**
@@ -103,13 +103,17 @@ public class HexagonField extends UIComponentBase {
 		try {
 	        if(!tiles[y][x].isSelectable()) {
 	            selectedTiles.add(tiles[y][x]);
+                LOGGER.info("Say What!");
 	            removeFieldFromSelected(x, y);
 	            return;
 	        }
 			if(!selectedTiles.contains(tiles[y][x])) {
 				selectedTiles.add(tiles[y][x]);
-				LOGGER.log(Level.INFO, "Clicked " + x + " / " + y);
-			}
+				LOGGER.log(Level.INFO, "Clicked! " + x + " / " + y);
+			} else {
+                selectedTiles.remove(tiles[y][x]);
+                LOGGER.log(Level.INFO, "Changed!! " + x + " / " + y);
+            }
 			if(onClickListener != null)
 				onClickListener.onClick(x, y);
 			else
@@ -125,7 +129,7 @@ public class HexagonField extends UIComponentBase {
 	 * @param y y position from the field
 	 * @return Returns true if the field could be set and false when the field was already set.
 	 */
-	public boolean addFieldToSelected(int x, int y) {
+/*	public boolean addFieldToSelected(int x, int y) {
 		if(!selectedTiles.contains(getTiles()[y][x])) {
 			selectedTiles.add(getTiles()[y][x]);
 			JsonObject json = Json.createObjectBuilder()
@@ -134,11 +138,12 @@ public class HexagonField extends UIComponentBase {
 	    			.add(HexagonFieldJsonKey.FIELD_Y.getKey(), y)
 	    			.build();
 			
-			HexagonFieldController.getInstance().sendMessage(this, json.toString());
-			return true;
+			GameController.getInstance().sendMessage(this, json.toString());
+			LOGGER.info("I SEND HELLO!");
+            return true;
 		}
 		return false;
-	}
+	}*/
 
     /**
      * Removes the field with the position x/y from the selected list.
@@ -155,7 +160,8 @@ public class HexagonField extends UIComponentBase {
                     .add(HexagonFieldJsonKey.FIELD_Y.getKey(), y)
                     .build();
 
-            HexagonFieldController.getInstance().sendMessage(this, json.toString());
+            GameController.getInstance().sendMessage(this, json.toString());
+            LOGGER.info("I SEND GOODBYE!");
             return true;
         }
         return false;
@@ -176,7 +182,7 @@ public class HexagonField extends UIComponentBase {
     			.add(HexagonFieldJsonKey.BACKGROUND_IMG.getKey(), path)
     			.build();
 		
-		HexagonFieldController.getInstance().sendMessage(this, json.toString());
+		GameController.getInstance().sendMessage(this, json.toString());
 	}
 	
 	/*

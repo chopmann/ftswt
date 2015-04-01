@@ -26,7 +26,7 @@ var HexagonEvent = {
 };
 
 /**
- * Initialize the canvas, HexagonField and build up the websocket connection.
+ * Initialize the canvas, Board and build up the websocket connection.
  * @constructor
  * @param {string} canvas - Canvas to draw in.
  * @param {string} contextpath - Path for the websocket connection.
@@ -55,13 +55,18 @@ function socketMessage(event) {
     var json = JSON.parse(event.data);
 
 	if(json.event) {
-		console.log(json.event);
+		console.log(Date.now() + " Msg Received: " + json.event);
 		switch(json.event) {
             case HexagonEvent.CONNECT_SESSION:
                 connect(json, this);
                 break;
             case HexagonEvent.INIT:
-                initHexagonField(json, this);
+                if (!this.hexagonField.InitDone) {
+                    initHexagonField(json, this);
+                    console.log("KAF")
+                } else {
+                    console.log("FAK")
+                };
                 break;
             case HexagonEvent.CHANGE_FIELD_BG:
                 changeFieldBackground(json, this);
@@ -107,7 +112,7 @@ function fieldClicked(x, y) {
 }
 
 /**
- * Sends an ajax request to the server from the HexagonField element to
+ * Sends an ajax request to the server from the Board element to
  * map the UIComponent with the websocket session.
  * 
  * @param {JSON} data - Json object from the incoming message.
@@ -125,7 +130,7 @@ function connect(data, handler) {
 }
 
 /**
- * Initialize the values from the HexagonField and loads all 
+ * Initialize the values from the Board and loads all
  * background images after that informs the server the initialization is done.
  * 
  * @param {JSON} data - Json object from incoming message.

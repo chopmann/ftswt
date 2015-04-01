@@ -1,34 +1,36 @@
-package de.ostfalia.hexagonfield;
+package saywhat;
+
+import de.ostfalia.tinypappe.Board;
+import de.ostfalia.tinypappe.GameController;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
 import javax.inject.Named;
 
 @Named
 @ApplicationScoped
 public class EventController {
 	
-	List<HexagonField> hexagonfields = new ArrayList<>();
+	List<Board> hexagonfields = new ArrayList<>();
 	
 	@PostConstruct
 	public void init() {
-		hexagonfields = HexagonFieldController.getInstance().getAllHexagonFields();
+		hexagonfields = GameController.getInstance().getAllHexagonFields();
 	}
 	
-	public void creditPayment(@Observes FieldEvent event) {
+/*	public void creditPayment(@Observes FieldEvent event) {
 		System.out.println("EVENT");
 		switch (event.eventType) {
 		case ADD_SELECTED:
-			for(HexagonField field : hexagonfields) {
+			for(Board field : hexagonfields) {
 				field.addFieldToSelected(event.tile.getX(), event.tile.getY());
 			}
 			break;
 		case REMOVE_SELECTED:
-			for(HexagonField field : hexagonfields) {
+			for(Board field : hexagonfields) {
 				System.out.println("remove");
 				field.removeFieldFromSelected(event.tile.getX(), event.tile.getY());
 			}
@@ -37,5 +39,5 @@ public class EventController {
 			break;
 		}
 		
-	}
+	}*/
 }

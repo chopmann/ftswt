@@ -150,12 +150,12 @@ Hexagon.prototype.getContext = function() {
 
 /*
  * ##############################################################################################
- * #									HexagonField											#
+ * #									Board											#
  * ##############################################################################################
  */
 
 /**
- * Constructor for the HexagonField.
+ * Constructor for the Board.
  * Represents the complete fields.
  * 
  * @constructor
@@ -196,7 +196,7 @@ function HexagonField(width, height, canvas) {
     this.fgimg;
     //this.fgimg.src = "resources/images/clouds.png";
 }
-
+HexagonField.prototype.InitDone = false;
 /**
  * Initialize the field.
  */
@@ -254,6 +254,7 @@ HexagonField.prototype.init = function() {
 		}
 	}.bind(this), true);
 	/* Touchscreen Testing*/
+    this.InitDone = true;
 };
 
 /**
@@ -441,6 +442,8 @@ HexagonField.prototype.onClick = function(event) {
                         this.selectedFields.push(new Point(j, i));
                         this.drawSelected();
                         this.hexagons[i][j].drawForeground(this.ctx);
+                    } else {
+                        this.removeSelection(new Point(j, i));
                     }
                     found = true;
                     this.fieldClicked(j, i);
