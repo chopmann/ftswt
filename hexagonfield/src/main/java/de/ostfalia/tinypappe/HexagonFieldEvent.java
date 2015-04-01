@@ -1,4 +1,4 @@
-package de.ostfalia.hexagonfield;
+package de.ostfalia.tinypappe;
 
 public enum HexagonFieldEvent {
 	CONNECT_SESSION("connect"),

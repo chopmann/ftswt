@@ -1,4 +1,4 @@
-package de.ostfalia.hexagonfield;
+package de.ostfalia.tinypappe;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package de.ostfalia.hexagonfield;
+package de.ostfalia.tinypappe;
 
 import java.util.Map;
 import java.util.logging.Level;
@@ -27,14 +27,14 @@ public class HexagonFieldPhaseListener implements PhaseListener {
 			String source = params.get("javax.faces.source");
 			LOGGER.log(Level.INFO, "HexagonPhaseListener source " + source);
 			UIComponent comp = view.findComponent(source);
-			if(comp instanceof HexagonField) {
-				HexagonField hex = (HexagonField) comp;
+			if(comp instanceof Board) {
+				Board hex = (Board) comp;
 				if(params.containsKey("sessionId")) {
-					LOGGER.log(Level.INFO, "HexagonFieldPhaseListener received session id " + params.get("sessionId") + " for HexagonField " + hex);
-					HexagonFieldController.getInstance().connectSession(hex, params.get("sessionId"));
+					LOGGER.log(Level.INFO, "HexagonFieldPhaseListener received session id " + params.get("sessionId") + " for Board " + hex);
+					GameController.getInstance().connectSession(hex, params.get("sessionId"));
 				}
 			} else {
-				LOGGER.log(Level.INFO, "HexagonFieldPhaseListener ajax not from an HexagonField");
+				LOGGER.log(Level.INFO, "HexagonFieldPhaseListener ajax not from an Board");
 			}
 		}
 	}

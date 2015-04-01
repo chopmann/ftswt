@@ -14,22 +14,5 @@
     	   <o:hexagonfield id="test" width="800" height="600" size="40" fields="#{testBean.tiles}"
     	   		onClickListener="#{testBean}" binding="#{testBean.hex}"></o:hexagonfield>
 		</h:form>
-		<h:form>
-			<h:inputText id="posX" value="#{testBean.posX}" />
-			<h:inputText id="posY" value="#{testBean.posY}" />
-			<h:commandButton id="addField" value="Add Field" action="#{testBean.addField()}" >
-				<f:ajax execute="addField posX posY" render=":selectedTable"></f:ajax>
-			</h:commandButton>
-			<h:commandButton id="serverTest" value="Remove" action="#{testBean.removeField}" >
-				<f:ajax execute="serverTest posX posY" render=":selectedTable"></f:ajax>
-			</h:commandButton>
-    	</h:form>
-    	
-    	<h:dataTable id="selectedTable" value="#{testBean.hex.selectedTiles}" var="field">
-    		<h:column>
-    			<f:facet name="header">Selected Fields</f:facet>
-    			#{field.x} / #{field.y}
-    		</h:column>
-    	</h:dataTable>
     </h:body>
 </html>

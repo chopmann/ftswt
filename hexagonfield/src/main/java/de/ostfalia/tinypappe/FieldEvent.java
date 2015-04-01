@@ -1,4 +1,4 @@
-package de.ostfalia.hexagonfield;
+package de.ostfalia.tinypappe;
 
 public class FieldEvent {
 	public HexagonFieldEvent eventType;

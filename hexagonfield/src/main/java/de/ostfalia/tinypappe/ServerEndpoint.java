@@ -1,4 +1,4 @@
-package de.ostfalia.hexagonfield;
+package de.ostfalia.tinypappe;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -28,7 +28,7 @@ public class ServerEndpoint {
 	@OnOpen
 	public void onOpen(Session session) {
 		LOGGER.log(Level.INFO, "HexagonWebsocket new connection: " + session.getId());
-		HexagonFieldController.getInstance().addSession(session);
+		GameController.getInstance().addSession(session);
 		try {
 			JsonObject json = Json.createObjectBuilder()
 					.add(HexagonFieldJsonKey.EVENT.getKey(), HexagonFieldEvent.CONNECT_SESSION.getKey())
@@ -79,7 +79,7 @@ public class ServerEndpoint {
 			}
 		}
 
-		HexagonFieldController.getInstance().receivedMessage(session, msg);
+		GameController.getInstance().receivedMessage(session, msg);
 	}
 
 	/**
@@ -89,6 +89,6 @@ public class ServerEndpoint {
 	@OnClose
 	public void onClose(Session session) {
 		LOGGER.log(Level.INFO, "HexagonWebsocket close connection: " + session.getId());
-		HexagonFieldController.getInstance().removeSession(session);
+		GameController.getInstance().removeSession(session);
 	}
 }

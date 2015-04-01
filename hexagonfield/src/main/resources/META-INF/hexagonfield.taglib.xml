@@ -12,7 +12,7 @@
         <component>
             <component-type>de.ostfalia.HexagonField</component-type>
             <renderer-type>de.ostfalia.HexagonFieldRenderer</renderer-type>
-            <handler-class>de.ostfalia.hexagonfield.HexagonFieldTagHandler</handler-class>
+            <handler-class>de.ostfalia.tinypappe.HexagonFieldTagHandler</handler-class>
         </component>
     </tag>
 </facelet-taglib>

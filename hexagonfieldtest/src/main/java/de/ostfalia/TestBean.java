@@ -10,16 +10,16 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import de.ostfalia.hexagonfield.Tile;
-import de.ostfalia.hexagonfield.FieldEvent;
-import de.ostfalia.hexagonfield.HexagonField;
-import de.ostfalia.hexagonfield.OnClickListener;
+import de.ostfalia.tinypappe.Board;
+import de.ostfalia.tinypappe.Tile;
+import de.ostfalia.tinypappe.FieldEvent;
+import de.ostfalia.tinypappe.OnClickListener;
 
 @Named
 @ViewScoped
 public class TestBean implements OnClickListener, Serializable {
 
-	private HexagonField hex;
+	private Board hex;
 	
 	private Tile[][] tiles;
 	
@@ -35,7 +35,7 @@ public class TestBean implements OnClickListener, Serializable {
 	@PostConstruct
 	public void init() {
 		tiles = fieldBean.getTiles();
-		hex = new HexagonField();
+		hex = new Board();
 	}
 	
 	
@@ -62,11 +62,11 @@ public class TestBean implements OnClickListener, Serializable {
         }
     }
 	
-	public HexagonField getHex() {
+	public Board getHex() {
 		return hex;
 	}
 
-	public void setHex(HexagonField hex) {
+	public void setHex(Board hex) {
 		this.hex = hex;
 	}
 

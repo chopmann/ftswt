@@ -6,6 +6,6 @@
     version="2.2">
 
 	<lifecycle>
-	    <phase-listener>de.ostfalia.hexagonfield.HexagonFieldPhaseListener</phase-listener>
+	    <phase-listener>de.ostfalia.tinypappe.HexagonFieldPhaseListener</phase-listener>
 	</lifecycle>
 </faces-config>

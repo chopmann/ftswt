@@ -1,4 +1,4 @@
-package de.ostfalia.hexagonfield;
+package de.ostfalia.tinypappe;
 
 public enum HexagonFieldJsonKey {
 	VALUE("value"),
