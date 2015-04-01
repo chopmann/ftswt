@@ -110,10 +110,10 @@ public class HexagonField extends UIComponentBase {
 				selectedTiles.add(tiles[y][x]);
 				LOGGER.log(Level.INFO, "Clicked " + x + " / " + y);
 			}
-			/*if(onClickListener != null)
+			if(onClickListener != null)
 				onClickListener.onClick(x, y);
 			else
-				LOGGER.log(Level.WARNING, this + " has no onClickListener binded!");*/
+				LOGGER.log(Level.WARNING, this + " has no onClickListener binded!");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

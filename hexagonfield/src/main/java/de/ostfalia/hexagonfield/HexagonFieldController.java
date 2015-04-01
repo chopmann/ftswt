@@ -120,10 +120,11 @@ public class HexagonFieldController {
 		HexagonFieldEvent event = HexagonFieldEvent.fromString((String) msg.get(HexagonFieldJsonKey.EVENT));
 		int x;
 		int y;
+        LOGGER.info("WOOP WOOP");
 		switch (event) {
 		case INIT:
 			hexagonField.setInitDone((boolean)msg.get(HexagonFieldJsonKey.VALUE));
-			break;
+            break;
 		case CLICKED:
 			x = (int) msg.get(HexagonFieldJsonKey.FIELD_X);
 			y = (int) msg.get(HexagonFieldJsonKey.FIELD_Y);
