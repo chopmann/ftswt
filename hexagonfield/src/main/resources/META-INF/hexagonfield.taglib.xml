@@ -15,4 +15,21 @@
             <handler-class>de.ostfalia.tinypappe.HexagonFieldTagHandler</handler-class>
         </component>
     </tag>
+
+    <tag>
+        <tag-name>hub</tag-name>
+        <component>
+            <component-type>de.ostfalia.tinypappe.Hub</component-type>
+            <renderer-type>de.ostfalia.tinypappe.HubRenderer</renderer-type>
+            <handler-class>de.ostfalia.tinypappe.HubTagHandler</handler-class>
+        </component>
+    </tag>
+
+    <tag>
+        <tag-name>SidePanel</tag-name>
+        <component>
+            <component-type>de.ostfalia.tinypappe.SidePanel</component-type>
+            <renderer-type>de.ostfalia.tinypappe.SidePanelRenderer</renderer-type>
+        </component>
+    </tag>
 </facelet-taglib>

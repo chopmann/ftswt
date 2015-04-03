@@ -1,6 +1,5 @@
 package de.ostfalia.tinypappe;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,17 +27,10 @@ public class ServerEndpoint {
 	@OnOpen
 	public void onOpen(Session session) {
 		LOGGER.log(Level.INFO, "HexagonWebsocket new connection: " + session.getId());
-		GameController.getInstance().addSession(session);
-		try {
-			JsonObject json = Json.createObjectBuilder()
-					.add(HexagonFieldJsonKey.EVENT.getKey(), HexagonFieldEvent.CONNECT_SESSION.getKey())
-					.add(HexagonFieldJsonKey.SESSION_ID.getKey(), session.getId())
-					.build();
-			session.getBasicRemote().sendText(json.toString());
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "Error while sending session id to client: " + session.getId());
-			e.printStackTrace();
-		}
+        SessionController.getInstance().joinWaitingRoom(session);
+        JsonObject msg = Json.createObjectBuilder().add("cmd", "log")
+                .add("payload", "heavy").build();
+        SessionController.getInstance().sendMessage(session, msg);
 	}
 
 	/**
@@ -79,7 +71,7 @@ public class ServerEndpoint {
 			}
 		}
 
-		GameController.getInstance().receivedMessage(session, msg);
+		HexagonController.getInstance().receivedMessage(session, msg);
 	}
 
 	/**
@@ -89,6 +81,7 @@ public class ServerEndpoint {
 	@OnClose
 	public void onClose(Session session) {
 		LOGGER.log(Level.INFO, "HexagonWebsocket close connection: " + session.getId());
-		GameController.getInstance().removeSession(session);
+		HexagonController.getInstance().removeSession(session);
+        SessionController.getInstance().leaveWaitingRoom(session);
 	}
 }

@@ -53,7 +53,8 @@ public class Board extends UIComponentBase {
 		onClickListener = getOnClickListener();
 		
 		JsonObjectBuilder builder = Json.createObjectBuilder();
-		builder.add(HexagonFieldJsonKey.EVENT.getKey(), HexagonFieldEvent.INIT.getKey())
+		builder.add("cmd", "relay")
+                .add(HexagonFieldJsonKey.EVENT.getKey(), HexagonFieldEvent.INIT.getKey())
 				.add(HexagonFieldJsonKey.SIZE.getKey(), getSize())
 				.add(HexagonFieldJsonKey.INIT.getKey(), true);
 		
@@ -74,7 +75,7 @@ public class Board extends UIComponentBase {
 		
 		builder.add(HexagonFieldJsonKey.FIELDS.getKey(), arrayBuilder1.build());
 		JsonObject json = builder.build();
-		GameController.getInstance().sendMessage(this, json.toString());
+		HexagonController.getInstance().sendMessage(this, json.toString());
 		
 	}
 
@@ -90,7 +91,7 @@ public class Board extends UIComponentBase {
 		builder.add(HexagonFieldJsonKey.FIELD_X.getKey(), x);
 		builder.add(HexagonFieldJsonKey.FIELD_Y.getKey(), y);
 		JsonObject json = builder.build();
-		GameController.getInstance().sendMessage(this, json.toString());
+		HexagonController.getInstance().sendMessage(this, json.toString());
 	}
 	
 	/**
@@ -138,7 +139,7 @@ public class Board extends UIComponentBase {
 	    			.add(HexagonFieldJsonKey.FIELD_Y.getKey(), y)
 	    			.build();
 			
-			GameController.getInstance().sendMessage(this, json.toString());
+			HexagonController.getInstance().sendMessage(this, json.toString());
 			LOGGER.info("I SEND HELLO!");
             return true;
 		}
@@ -160,7 +161,7 @@ public class Board extends UIComponentBase {
                     .add(HexagonFieldJsonKey.FIELD_Y.getKey(), y)
                     .build();
 
-            GameController.getInstance().sendMessage(this, json.toString());
+            HexagonController.getInstance().sendMessage(this, json.toString());
             LOGGER.info("I SEND GOODBYE!");
             return true;
         }
@@ -173,16 +174,17 @@ public class Board extends UIComponentBase {
 	 * @param y int Y position
 	 * @param path String image path
 	 */
-	public void changeBackground(int x, int y, String path) {
+	public JsonObject changeBackground(int x, int y, String path) {
 		tiles[y][x].setBackgroundImg(path);
 		JsonObject json = Json.createObjectBuilder()
+                .add("cmd", "relay")
 				.add(HexagonFieldJsonKey.EVENT.getKey(), HexagonFieldEvent.CHANGE_FIELD_BG.getKey())
     			.add(HexagonFieldJsonKey.FIELD_X.getKey(), x)
     			.add(HexagonFieldJsonKey.FIELD_Y.getKey(), y)
     			.add(HexagonFieldJsonKey.BACKGROUND_IMG.getKey(), path)
     			.build();
-		
-		GameController.getInstance().sendMessage(this, json.toString());
+		return json;
+		//HexagonController.getInstance().sendMessage(this, json.toString());
 	}
 	
 	/*

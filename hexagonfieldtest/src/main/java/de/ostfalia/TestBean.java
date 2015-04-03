@@ -9,11 +9,9 @@ import javax.enterprise.event.Event;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.json.JsonObject;
 
-import de.ostfalia.tinypappe.Board;
-import de.ostfalia.tinypappe.Tile;
-import de.ostfalia.tinypappe.FieldEvent;
-import de.ostfalia.tinypappe.OnClickListener;
+import de.ostfalia.tinypappe.*;
 
 @Named
 @ViewScoped
@@ -75,11 +73,11 @@ public class TestBean implements OnClickListener, Serializable {
 		Logger.getAnonymousLogger().log(Level.INFO, "TestBean: clicked " + x + " / " + y);
         System.out.println("Clicked");
         if(tiles[y][x].getBackgroundImg().equals("resources/images/sand.jpg")) {
-            System.out.println("Iambatman");
-            hex.changeBackground(x, y, "resources/images/grass.jpg");
+            JsonObject msg = hex.changeBackground(x, y, "resources/images/grass.jpg");
+            HexagonController.getInstance().sendMessage(hex, msg.toString());
         } else {
-			hex.changeBackground(x, y, "resources/images/sand.jpg");
-            System.out.println("robin");
+            JsonObject msg = hex.changeBackground(x, y, "resources/images/sand.jpg");
+            HexagonController.getInstance().sendMessage(hex, msg.toString());
         }
 	}
 

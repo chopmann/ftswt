@@ -31,7 +31,7 @@ public class HexagonFieldPhaseListener implements PhaseListener {
 				Board hex = (Board) comp;
 				if(params.containsKey("sessionId")) {
 					LOGGER.log(Level.INFO, "HexagonFieldPhaseListener received session id " + params.get("sessionId") + " for Board " + hex);
-					GameController.getInstance().connectSession(hex, params.get("sessionId"));
+					HexagonController.getInstance().connectSession(hex, params.get("sessionId"));
 				}
 			} else {
 				LOGGER.log(Level.INFO, "HexagonFieldPhaseListener ajax not from an Board");

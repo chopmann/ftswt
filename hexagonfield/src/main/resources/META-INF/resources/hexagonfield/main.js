@@ -53,36 +53,41 @@ function HexagonHandler(canvas, contextpath) {
  */
 function socketMessage(event) {
     var json = JSON.parse(event.data);
-
-	if(json.event) {
-		console.log(Date.now() + " Msg Received: " + json.event);
-		switch(json.event) {
-            case HexagonEvent.CONNECT_SESSION:
-                connect(json, this);
-                break;
-            case HexagonEvent.INIT:
-                if (!this.hexagonField.InitDone) {
-                    initHexagonField(json, this);
-                    console.log("KAF")
-                } else {
-                    console.log("FAK")
-                };
-                break;
-            case HexagonEvent.CHANGE_FIELD_BG:
-                changeFieldBackground(json, this);
-                break;
-            case HexagonEvent.ADD_SELECTED:
-                addSelectedField(json, this);
-                break;
-            case HexagonEvent.REMOVE_SELECTED:
-                removeSelectedField(json, this);
-                break;
-            case HexagonEvent.CONTEXT_MENU:
-            	setContextMenu(json, this);
-            	openMenu(json, this);
-            	break;
-		}
-	}
+    switch (json.cmd) {
+        case "wait":
+            console.log(Date.now() + " CMD: Waiting");
+            break;
+        case "relay":
+            console.log(Date.now() + " Msg Received: " + json.event);
+            switch (json.event) {
+                case HexagonEvent.CONNECT_SESSION:
+                    connect(json, this);
+                    break;
+                case HexagonEvent.INIT:
+                    if (!this.hexagonField.InitDone) {
+                        initHexagonField(json, this);
+                        console.log("KAF")
+                    } else {
+                        console.log("FAK")
+                    }
+                    ;
+                    break;
+                case HexagonEvent.CHANGE_FIELD_BG:
+                    changeFieldBackground(json, this);
+                    break;
+                case HexagonEvent.ADD_SELECTED:
+                    addSelectedField(json, this);
+                    break;
+                case HexagonEvent.REMOVE_SELECTED:
+                    removeSelectedField(json, this);
+                    break;
+                case HexagonEvent.CONTEXT_MENU:
+                    setContextMenu(json, this);
+                    openMenu(json, this);
+                    break;
+            }
+            break;
+    }
 }
 
 /**

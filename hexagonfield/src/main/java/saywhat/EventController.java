@@ -1,7 +1,7 @@
 package saywhat;
 
 import de.ostfalia.tinypappe.Board;
-import de.ostfalia.tinypappe.GameController;
+import de.ostfalia.tinypappe.HexagonController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class EventController {
 	
 	@PostConstruct
 	public void init() {
-		hexagonfields = GameController.getInstance().getAllHexagonFields();
+		hexagonfields = HexagonController.getInstance().getAllHexagonFields();
 	}
 	
 /*	public void creditPayment(@Observes FieldEvent event) {
