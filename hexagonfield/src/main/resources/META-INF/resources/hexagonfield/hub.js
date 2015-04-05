@@ -46,6 +46,7 @@ var HubController = function(contextpath) {
         case "wait":
             console.log(Date.now() + " CMD: Waiting");
             var msg = {};
+            msg["cmd"] = "relay",
             msg["receiver"] = "GameController";
             msg["action"] = "newGame";
             this.sendMessage(msg);
@@ -62,7 +63,7 @@ var HubController = function(contextpath) {
 
 function relay(msg) {
     console.log(msg);
-    var target = msg.reciepent;
+    var target = msg.receiver;
     console.log(target);
     console.log(components);
     for (var i = 0; i < components.length; i++) {

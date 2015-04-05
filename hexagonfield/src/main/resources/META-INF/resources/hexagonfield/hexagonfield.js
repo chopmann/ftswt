@@ -45,7 +45,7 @@ function Hexagon(x, y, size, bgImg) {
  */
 Hexagon.prototype.calcPoints = function() {
 	this.h = Math.sqrt(3) * this.size / 2;
-	this.points = [
+	this.corners = [
 		new Point(this.x, this.y),
 		new Point(this.x + this.size, this.y),
 		new Point(this.x + 1.5 * this.size, this.y + this.h),
@@ -65,8 +65,8 @@ Hexagon.prototype.calcPoints = function() {
 Hexagon.prototype.isPointIn = function(pt) {
 	var result = true;
 	var i, j;
-	for(i = 0, j = this.points.length - 1; i < this.points.length && result == true; j = i++) {
-		if(0 < ((this.points[j].x - this.points[i].x) * (pt.y - this.points[i].y) - (this.points[j].y - this.points[i].y) * (pt.x - this.points[i].x)) && result != false) {
+	for(i = 0, j = this.corners.length - 1; i < this.corners.length && result == true; j = i++) {
+		if(0 < ((this.corners[j].x - this.corners[i].x) * (pt.y - this.corners[i].y) - (this.corners[j].y - this.corners[i].y) * (pt.x - this.corners[i].x)) && result != false) {
 			result = false;
 		}
 	}
@@ -91,13 +91,13 @@ Hexagon.prototype.draw = function(ctx) {
  */
 Hexagon.prototype.drawPath = function(ctx) {
 	ctx.beginPath();
-    ctx.moveTo(this.points[0].x, this.points[0].y);
-    ctx.lineTo(this.points[1].x, this.points[1].y);
-    ctx.lineTo(this.points[2].x, this.points[2].y);
-    ctx.lineTo(this.points[3].x, this.points[3].y);
-    ctx.lineTo(this.points[4].x, this.points[4].y);
-    ctx.lineTo(this.points[5].x, this.points[5].y);
-    ctx.lineTo(this.points[0].x, this.points[0].y);
+    ctx.moveTo(this.corners[0].x, this.corners[0].y);
+    ctx.lineTo(this.corners[1].x, this.corners[1].y);
+    ctx.lineTo(this.corners[2].x, this.corners[2].y);
+    ctx.lineTo(this.corners[3].x, this.corners[3].y);
+    ctx.lineTo(this.corners[4].x, this.corners[4].y);
+    ctx.lineTo(this.corners[5].x, this.corners[5].y);
+    ctx.lineTo(this.corners[0].x, this.corners[0].y);
 	ctx.closePath();
 };
 
@@ -123,7 +123,7 @@ Hexagon.prototype.drawBackground = function(ctx) {
 		ctx.save();
 		this.drawPath(ctx);
 		ctx.clip();
-		ctx.drawImage(this.bgImg, 0, 0, this.bgImg.width, this.bgImg.height, this.points[5].x, this.points[0].y, this.points[2].x - this.points[5].x, this.points[3].y - this.points[0].y);
+		ctx.drawImage(this.bgImg, 0, 0, this.bgImg.width, this.bgImg.height, this.corners[5].x, this.corners[0].y, this.corners[2].x - this.corners[5].x, this.corners[3].y - this.corners[0].y);
 		ctx.restore();
 	}
     this.drawForeground(ctx);
@@ -134,7 +134,7 @@ Hexagon.prototype.drawForeground = function(ctx) {
         ctx.save();
         this.drawPath(ctx);
         ctx.clip();
-        ctx.drawImage(this.foregroundImg, 0, 0, this.foregroundImg.width, this.foregroundImg.height, this.points[5].x, this.points[0].y, this.points[2].x - this.points[5].x, this.points[3].y - this.points[0].y);
+        ctx.drawImage(this.foregroundImg, 0, 0, this.foregroundImg.width, this.foregroundImg.height, this.corners[5].x, this.corners[0].y, this.corners[2].x - this.corners[5].x, this.corners[3].y - this.corners[0].y);
         ctx.restore();
     }
 };

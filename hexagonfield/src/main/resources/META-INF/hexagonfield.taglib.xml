@@ -30,6 +30,7 @@
         <component>
             <component-type>de.ostfalia.tinypappe.SidePanel</component-type>
             <renderer-type>de.ostfalia.tinypappe.SidePanelRenderer</renderer-type>
+            <handler-class>de.ostfalia.tinypappe.SidePanelTagHandler</handler-class>
         </component>
     </tag>
 </facelet-taglib>

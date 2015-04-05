@@ -20,7 +20,7 @@ public class Game {
         players.remove(session);
     }
 
-    public Game() {
-        id = UUID.randomUUID();
+    public Game(UUID id) {
+        this.id = id;
     }
 }

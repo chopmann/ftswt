@@ -50,15 +50,20 @@ public class SessionController {
 
     public void receiveMessage(Session session, JsonObject msg) {
         LOGGER.info("Inc from: " + session.getId());
-        switch (msg.getString("receiver")) {
-            case "GameController":
-                GameController.getInstance().receive(session, msg);
-                break;
-            default:
-                LOGGER.info("Receiver:"+ msg.getString("receiver") + " not found!");
-                break;
+        String cmd = msg.getString("cmd");
+        LOGGER.info(cmd);
+        if (cmd.equals("relay")) {
+            switch (msg.getString("receiver")) {
+                case "GameController":
+                    GameController.getInstance().receive(session, msg);
+                    break;
+                default:
+                    LOGGER.info("Receiver:"+ msg.getString("receiver") + " not found!");
+                    break;
+            }
+        } else {
+            LOGGER.info("WOOPS");
         }
-
     }
 
     public static SessionController getInstance() {

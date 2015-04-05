@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 @ResourceDependencies({
         @ResourceDependency(library = "hexagonfield", name = "hub.js", target = "head"),
         @ResourceDependency(library = "hexagonfield", name = "sidepanel.js", target = "head"),
+        @ResourceDependency(library = "hexagonfield", name = "hexagon.js", target = "head"),
+        @ResourceDependency(library = "hexagonfield", name = "board.js", target = "head"),
         @ResourceDependency(library = "javax.faces", name = "jsf.js", target = "head")
 })
 
@@ -38,10 +40,19 @@ public class SidePanelRenderer extends Renderer {
 
         ResponseWriter writer = context.getResponseWriter();
 
+
         SidePanel sidePanel = (SidePanel) component;
         writer.startElement("div", component);
-        writer.writeAttribute("id", sidePanel.getId(), null);
+        writer.writeAttribute("id", "SidePanel", null);
+        // HTML5 Canvas
+        writer.startElement("canvas", component);
+        writer.writeAttribute("id", "cv", null);
+        writer.writeAttribute("width", 500, null);
+        writer.writeAttribute("height", 500, null);
+        writer.endElement("canvas");
         writer.endElement("div");
+
+
 
         // Script tag to initialize the JavaScript.
         writer.startElement("script", component);
