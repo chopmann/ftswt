@@ -22,16 +22,28 @@ function Hexagon(coordinate, hexagonSideSize) {
     this.corners = hex_corners(this.center, hexagonSideSize);
     this.size = hexagonSideSize;
     this.bgImg = new Image();
-    this.bgImg.src = "resources/images/grass.jpg";
+    this.bgImg.src = "resources/images/normal.png";
     this.foregroundImg = null;
-    this.bordersColor = ['blue','black','red','blue','black','red']
+    this.bordersColor = ['black','black','black','black','black','black']
 }
-/*
- * ##############################################################################################
- * #										Point												#
- * ##############################################################################################
- */
 
+/**
+ * Checks if the given point is inside the field.
+ * To calculate this the cross product is used with the third dimension set to zero.
+ *
+ * @param {Point} pt - Point to check.
+ * @returns {boolean} true if the point is inside and false if not.
+ */
+Hexagon.prototype.isPointIn = function (pt) {
+    var result = true;
+    var i, j;
+    for (i = 0, j = this.corners.length - 1; i < this.corners.length && result == true; j = i++) {
+        if (0 < ((this.corners[j].q - this.corners[i].q) * (pt.r - this.corners[i].r) - (this.corners[j].r - this.corners[i].r) * (pt.q - this.corners[i].q)) && result != false) {
+            result = false;
+        }
+    }
+    return result;
+};
 /**
  * Axial Coordinate Point on cavas
  *
@@ -42,6 +54,13 @@ function Hexagon(coordinate, hexagonSideSize) {
 Axial = function(q, r){
     this.q = q;
     this.r = r;
+};
+
+Axial.prototype.toCubefromOffset_OddR = function() {
+    var x = this.q - (this.r - (this.r&1)) / 2;
+    var z = this.r;
+    var y = -x-z;
+    return new Cube(x,y,z);
 };
 
 /**
@@ -57,6 +76,9 @@ Cube = function (x, y, z) {
     this.y = y;
     this.z = z;
 };
+Cube.prototype.toString = function() {
+    return "x:" + this.x.toString() + "y:" + this.y.toString() + "z:" + this.z.toString();
+}
 /**
  * Converts cube coordinate into an axial coordinate.
  * @returns {Axial}
@@ -74,6 +96,27 @@ Cube.prototype.toOffset_OddR = function () {
     var r = this.z;
     return new Axial(q, r);
 };
+cube_round = function(cube) {
+    var rx = Math.round(cube.x);
+    var ry = Math.round(cube.y);
+    var rz = Math.round(cube.z);
+
+    var x_diff = Math.abs(rx - cube.x);
+    var y_diff = Math.abs(ry - cube.y);
+    var z_diff = Math.abs(rz - cube.z);
+
+    if (x_diff > y_diff && x_diff > z_diff) {
+        rx = -ry-rz;
+    }else if (y_diff > z_diff) {
+        ry = -rx-rz;
+    }
+    else {
+        rz = -rx-ry;
+    }
+
+
+    return new Cube(rx, ry, rz)
+}
 
 /**
  * Calculates the center of a Hexagon in canvas representation.
@@ -85,7 +128,6 @@ Cube.prototype.toOffset_OddR = function () {
  */
 hex_center = function(coordinate, size) {
     var hex = coordinate.toOffset_OddR();
-    console.log(hex);
     var height = size  * 2;
     var width = Math.sqrt(3)/ 2 * height ;
     var x = (width / 2) + width*hex.q;
@@ -94,10 +136,11 @@ hex_center = function(coordinate, size) {
         x = (width / 2) + width*hex.q;
         y = size
     } else if(hex.r % 2 == 1){
-        x = hex.q == 0 ? width:width*hex.q;
+        x = hex.q == 0 ? width:width+width*hex.q;
     }
     return new Axial(x, y);
 };
+
 
 
 /**
@@ -134,23 +177,12 @@ hex_corners = function (center, size) {
     return corners;
 };
 
-/**
- * Checks if the given point is inside the field.
- * To calculate this the cross product is used with the third dimension set to zero.
- *
- * @param {Point} pt - Point to check.
- * @returns {boolean} true if the point is inside and false if not.
- */
-Hexagon.prototype.isPointIn = function (pt) {
-    var result = true;
-    var i, j;
-    for (i = 0, j = this.corners.length - 1; i < this.corners.length && result == true; j = i++) {
-        if (0 < ((this.corners[j].x - this.corners[i].x) * (pt.y - this.corners[i].y) - (this.corners[j].y - this.corners[i].y) * (pt.x - this.corners[i].x)) && result != false) {
-            result = false;
-        }
-    }
-    return result;
+hex_neighbors = function(coordinate) {
+    return [new Cube(coordinate.x+1, coordinate.y-1, coordinate.z), new Cube(coordinate.x+1, coordinate.y, coordinate.z-1),
+            new Cube(coordinate.x, coordinate.y+1, coordinate.z-1), new Cube(coordinate.x-1, coordinate.y+1, coordinate.z),
+            new Cube(coordinate.x-1, coordinate.y, coordinate.z+1), new Cube(coordinate.x, coordinate.y-1, coordinate.z+1)];
 };
+
 
 /**
  * Draws the Hexagon into the given context.
@@ -161,7 +193,8 @@ Hexagon.prototype.isPointIn = function (pt) {
 drawHexagon = function (ctx, hex) {
     drawHexagonBackground(ctx, hex);
     drawHexagonSides(ctx, hex);
-   drawForeground(ctx, hex);
+    //drawTestGrid(ctx, hex);
+    drawForeground(ctx, hex);
 };
 
 /**
@@ -246,10 +279,27 @@ drawHexagonBackground = function (ctx, hex) {
 
 drawForeground = function (ctx, hex) {
     ctx.save();
-    ctx.font="10px Georgia";
-    ctx.strokeStyle = "white";
+    ctx.font="12px Consolas";
+
     var tmp = hex.coordinate.toOffset_OddR();
-    ctx.fillText(tmp.r+"/"+tmp.q, hex.center.q - 5, hex.center.r - 5);
+    ctx.fillStyle = 'Blue';
+    ctx.fillText(hex.coordinate.z, hex.corners[0].q - 6, hex.corners[0].r - 12.5);
+    ctx.fillStyle = 'DarkSalmon';
+    ctx.fillText(hex.coordinate.y, hex.corners[2].q + 7.5, hex.corners[2].r + 7.5);
+    ctx.fillStyle = 'LightGreen';
+    ctx.fillText(hex.coordinate.x, hex.corners[4].q - 12, hex.corners[2].r + 7.5);
+    ctx.fillStyle = 'white';
+    ctx.fillText(tmp.r+"/"+tmp.q+"", hex.center.q - 6, hex.center.r + 6);
+    //"/"+hex.coordinate.z+"/"+hex.coordinate.x, hex.center.q - 15, hex.center.r + 7.5);
+    ctx.restore();
+};
+
+drawTestGrid = function (ctx, hex) {
+    ctx.save();
+    var color = 'white';
+    drawHexagonSide(ctx,hex.corners[0], hex.corners[3], color);
+    drawHexagonSide(ctx,hex.corners[1], hex.corners[5], color);
+    drawHexagonSide(ctx,hex.corners[2], hex.corners[4], color);
     ctx.restore();
 };
 

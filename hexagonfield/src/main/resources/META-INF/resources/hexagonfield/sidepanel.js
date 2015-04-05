@@ -30,7 +30,8 @@ function SidePanelBuilder() {
         var disp = JSON.stringify(msg.payload);
         $('#SidePanel').append('<p>'+disp+'<p>');
         var canvas = getCanvas();
-        var board = new Board(6, 40, 'oddRowMap');
+        var board = new Board(7, 40, 'oddRowMap');
+        canvas.addEventListener('click', function(e){ boardClickListener(e, board)}, false);
         drawMap(canvas.getContext('2d'), board.map);
     };
     return new Component();
