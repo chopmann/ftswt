@@ -70,35 +70,15 @@ drawHexagonGrid= function(ctx, map) {
 boardClickListener = function(e, board) {
     //Todo refactor to be independent of click event
     console.log('click_offset: ' + e.offsetX + '/' + e.offsetY);
-    var size = board.hexagonSideSize;
-    var height = size  * 2;
-    var width = Math.sqrt(3)/ 2 * height ;
-    var q = e.offsetX/width -1/2;
-    var r = (4 * (e.offsetY - size) ) / (3 * height );
     var click_point = new Axial(e.offsetX, e.offsetY);
-    var click_cube = (new Axial(q,r)).toCubefromOffset_OddR();
-    var first_candidate_coord = cube_round(click_cube);
-    var neighbors = hex_neighbors(first_candidate_coord);
-    var candidates = [first_candidate_coord].concat(neighbors);
-    var resp = null;
-    for (var i = 0; i<candidates.length; i++) {
-        var hex = board.map[candidates[i]];
-        if(typeof hex !== 'undefined') {
-            if (isPointIn(click_point, hex.corners)) {
-                console.log("It's a hit!");
-                console.log('Candidate Nr: ' + i);
-                console.log((candidates[i]));
-                resp = hex;
-                break;
-            }
-        }
-    }
-    if (resp == null) {
-        console.log("No hit!");
+    var coordinate = pixelToCube(click_point, board.hexagonSideSize);
+    if (typeof board.map[coordinate] !== 'undefined') {
+        console.log("It's a hit!");
+        console.log(board.map[coordinate]);
+    } else {
+        console.log("No hit!")
     }
 };
-
-
 
 // Test key movement (catch arrow key events)
 turnKeys = function() {

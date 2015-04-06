@@ -46,6 +46,12 @@ isPointIn = function (point, vertices) {
     return found;
 };
 
+/**
+ * Maybe useful??
+ * @param first
+ * @param second
+ * @returns {number}
+ */
 scalarCrossProduct = function (first, second) {
     return (first.q - second.q ) * (first.r - second.r);
 };
@@ -145,6 +151,32 @@ hex_center = function(coordinate, size) {
         x = hex.q == 0 ? width:width+width*hex.q;
     }
     return new Axial(x, y);
+};
+
+pixelToCube = function(point, size){
+    //Todo Remove Magic and Unicorns
+    // Magic and Unicorns -- Start
+    var height = size  * 2;
+    var width = Math.sqrt(3)/ 2 * height ;
+    var q = point.q/width -1/2;
+    var r = (4 * (point.r - size) ) / (3 * height );
+    // Magic and Unicorns -- End
+    var floatingPointCube = (new Axial(q,r)).toCubefromOffset_OddR(); // Refactor this?
+    var first_candidate_coord = cube_round(floatingPointCube);
+    var neighbors = hex_neighbors(first_candidate_coord);
+    var candidates = [first_candidate_coord].concat(neighbors);
+    var result = null;
+    for (var i = 0; i<candidates.length; i++) {
+        var center = hex_center(candidates[i], size);
+        if (isPointIn(point, hex_corners(center, size))) {
+            console.log("Coordinate converted");
+            console.log('Candidate Nr: ' + i);
+            console.log((candidates[i]));
+            result = candidates[i];
+            break;
+        }
+    }
+    return result;
 };
 
 
