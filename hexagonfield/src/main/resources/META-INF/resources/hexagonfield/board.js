@@ -39,7 +39,8 @@ oddRowMap = function(columnSize, hexagonSideSize) {
         for (;x < x_count; x++) {
             var y  = -x-z;
             var coordinates = new Cube(x, y, z);
-            if (Math.floor(Math.random() * 2) == 0) {
+            var stopRandom = false;
+            if (Math.floor(Math.random() * 2) == 0 || stopRandom) {
                 var hexagon = new Hexagon(coordinates, hexagonSideSize);
                 hex_count++;
                 map[coordinates]= hexagon;
@@ -51,8 +52,7 @@ oddRowMap = function(columnSize, hexagonSideSize) {
 };
 
 /**
- * Draws the Hexagon into the given context.
- *
+ *  *
  * @param {CanvasRenderingContext2D} ctx - Canvas 2d context.
  * @param hex
  */
@@ -68,13 +68,14 @@ drawHexagonGrid= function(ctx, map) {
 };
 
 boardClickListener = function(e, board) {
+    //Todo refactor to be independent of click event
     console.log('click_offset: ' + e.offsetX + '/' + e.offsetY);
     var size = board.hexagonSideSize;
     var height = size  * 2;
     var width = Math.sqrt(3)/ 2 * height ;
     var q = e.offsetX/width -1/2;
-    var r = (4 * (e.offsetY - size) ) / (3 * height ) ;
-    var click_point = new Axial(e.offsetX, e.offsetY)
+    var r = (4 * (e.offsetY - size) ) / (3 * height );
+    var click_point = new Axial(e.offsetX, e.offsetY);
     var click_cube = (new Axial(q,r)).toCubefromOffset_OddR();
     var first_candidate_coord = cube_round(click_cube);
     var neighbors = hex_neighbors(first_candidate_coord);
@@ -83,7 +84,7 @@ boardClickListener = function(e, board) {
     for (var i = 0; i<candidates.length; i++) {
         var hex = board.map[candidates[i]];
         if(typeof hex !== 'undefined') {
-            if (hex.isPointIn(click_point)) {
+            if (isPointIn(click_point, hex.corners)) {
                 console.log("It's a hit!");
                 console.log('Candidate Nr: ' + i);
                 console.log((candidates[i]));
@@ -95,4 +96,32 @@ boardClickListener = function(e, board) {
     if (resp == null) {
         console.log("No hit!");
     }
+};
+
+
+
+// Test key movement (catch arrow key events)
+turnKeys = function() {
+    //TODO Something useful
+    $(document).keydown(function(e) {
+        switch(e.which) {
+            case 37: // left
+                console.log("left");
+                break;
+
+            case 38: // up
+                console.log("up");
+                break;
+
+            case 39: // right
+                console.log("right");
+                break;
+            case 40: // down
+                console.log("down");
+                break;
+
+            default: return; // exit this handler for other keys
+        }
+        e.preventDefault(); // prevent the default action (scroll / move caret)
+    });
 };

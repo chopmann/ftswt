@@ -31,14 +31,16 @@ function Hexagon(coordinate, hexagonSideSize) {
  * Checks if the given point is inside the field.
  * To calculate this the cross product is used with the third dimension set to zero.
  *
- * @param {Point} pt - Point to check.
+ * @param {Axial} point to check.
+ * @param {Array} area defined by points on an array
  * @returns {boolean} true if the point is inside and false if not.
  */
-Hexagon.prototype.isPointIn = function (pt) {
-    var result = true;
+isPointIn = function (point, area) {
+    //Todo remove magic and unicorns
+    var result = true; // WTF?? true if the point is inside and false if not.??? Always inside?
     var i, j;
-    for (i = 0, j = this.corners.length - 1; i < this.corners.length && result == true; j = i++) {
-        if (0 < ((this.corners[j].q - this.corners[i].q) * (pt.r - this.corners[i].r) - (this.corners[j].r - this.corners[i].r) * (pt.q - this.corners[i].q)) && result != false) {
+    for (i = 0, j = area.length - 1; i < area.length && result == true; j = i++) {
+        if (0 < ((area[j].q - area[i].q) * (point.r - area[i].r) - (area[j].r - area[i].r) * (point.q - area[i].q)) && result != false) {
             result = false;
         }
     }
@@ -127,6 +129,7 @@ cube_round = function(cube) {
  * @returns {Axial}
  */
 hex_center = function(coordinate, size) {
+    console.log("Called: "+Date.now());
     var hex = coordinate.toOffset_OddR();
     var height = size  * 2;
     var width = Math.sqrt(3)/ 2 * height ;
@@ -142,7 +145,7 @@ hex_center = function(coordinate, size) {
 };
 
 
-
+//TODO: Better ASCII ART
 /**
  *    0____1
  *   /      \

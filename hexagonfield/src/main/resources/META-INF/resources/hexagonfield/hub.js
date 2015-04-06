@@ -12,7 +12,7 @@ var hubcontroller;
 function main(contextpath) {
     console.log("Found: " + blueprints.length )
     for	(index = 0; index < blueprints.length; index++) {
-        console.log(blueprints[index])
+        console.log(blueprints[index]);
         var CmpBuilder = blueprints[index];
         var cmp = CmpBuilder();
         console.log(cmp);
@@ -40,6 +40,7 @@ var HubController = function(contextpath) {
     }
 }
 
+//TODO: Rename to receive
  function messageAction(event) {
     var json = JSON.parse(event.data);
     switch (json.cmd) {
@@ -60,16 +61,16 @@ var HubController = function(contextpath) {
             break;
     }
 }
-
+//TODO: "Better"?
 function relay(msg) {
     console.log(msg);
-    var target = msg.receiver;
-    console.log(target);
+    var receiver = msg.receiver;
+    console.log(receiver);
     console.log(components);
     for (var i = 0; i < components.length; i++) {
         console.log(components[i].endpoint);
-        if (components[i].endpoint == target ) {
-            console.log("Endpoint: " + target + " reached." );
+        if (components[i].endpoint == receiver ) {
+            console.log("Endpoint: " + receiver + " reached." );
             components[i].receive(msg);
         };
     };

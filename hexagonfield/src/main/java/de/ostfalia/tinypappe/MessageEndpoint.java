@@ -53,7 +53,7 @@ public class MessageEndpoint {
      */
     @OnClose
     public void onClose(Session session) {
-        LOGGER.log(Level.INFO, "HexagonWebsocket close connection: " + session.getId());
+        LOGGER.log(Level.INFO, "close connection: " + session.getId());
         HexagonController.getInstance().removeSession(session);
         SessionController.getInstance().leaveWaitingRoom(session);
     }

@@ -6,7 +6,7 @@ function SidePanelBuilder() {
     var Component = function() {
         this.sendMessage = null;
         this.socket = null;
-        this.endpoint = "sidepanel";
+        this.endpoint = "sidepanel"; //TODO: Besseren namen!
     };
     Component.prototype.receive = function(msg) {
         var action = msg.action;
@@ -31,6 +31,7 @@ function SidePanelBuilder() {
         $('#SidePanel').append('<p>'+disp+'<p>');
         var canvas = getCanvas();
         var board = new Board(7, 40, 'oddRowMap');
+        turnKeys();
         canvas.addEventListener('click', function(e){ boardClickListener(e, board)}, false);
         drawMap(canvas.getContext('2d'), board.map);
     };
