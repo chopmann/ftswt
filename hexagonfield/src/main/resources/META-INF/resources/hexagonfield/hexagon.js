@@ -28,23 +28,26 @@ function Hexagon(coordinate, hexagonSideSize) {
 }
 
 /**
- * Checks if the given point is inside the field.
- * To calculate this the cross product is used with the third dimension set to zero.
- *
+ * Checks if the given point is inside the polygon.
+ * Uses Cross Product (2D)
  * @param {Axial} point to check.
- * @param {Array} area defined by points on an array
+ * @param {Array} vertices
  * @returns {boolean} true if the point is inside and false if not.
  */
-isPointIn = function (point, area) {
-    //Todo remove magic and unicorns
-    var result = true; // WTF?? true if the point is inside and false if not.??? Always inside?
+isPointIn = function (point, vertices) {
+    //Todo polygon sides are marked as outside -- maybe implement another algorithm.
     var i, j;
-    for (i = 0, j = area.length - 1; i < area.length && result == true; j = i++) {
-        if (0 < ((area[j].q - area[i].q) * (point.r - area[i].r) - (area[j].r - area[i].r) * (point.q - area[i].q)) && result != false) {
-            result = false;
-        }
+    var found = true;
+    for (i = 0, j = vertices.length - 1; i < vertices.length && found; j = i++) {
+        var xProduct = (vertices[j].q - vertices[i].q) * (point.r - vertices[i].r)
+                      -(vertices[j].r - vertices[i].r) * (point.q - vertices[i].q);
+        if (0 < xProduct && found) found = false;
     }
-    return result;
+    return found;
+};
+
+scalarCrossProduct = function (first, second) {
+    return (first.q - second.q ) * (first.r - second.r);
 };
 /**
  * Axial Coordinate Point on cavas
