@@ -535,7 +535,7 @@ HexagonField.prototype.setHighlight = function(range, highlightCenter) {
  * @param {Hexagon || Point} obj
  * @returns {boolean} - True if contains else False
  */
-Array.prototype.contains = function(obj) {
+/*Array.prototype.contains = function(obj) {
     var x = obj.x;
     var y = obj.y;
     for (var i = 0; i < this.length; i++) {
@@ -544,4 +544,4 @@ Array.prototype.contains = function(obj) {
         }
     }
     return false;
-};
+};*/

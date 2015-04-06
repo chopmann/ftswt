@@ -33,7 +33,7 @@ var HubController = function(contextpath) {
         console.log(msg);
         this.socket.send(JSON.stringify(msg));
     };
-    for (index = 0; index < components.length; index++) {
+    for (var index = 0; index < components.length; index++) {
         components[index].socket = this.socket;
         components[index].sendMessage = this.sendMessage;
         console.log(components[index])
