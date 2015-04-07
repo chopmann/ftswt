@@ -10,10 +10,9 @@
  */
 
 /**
- * Represent one hexagon.
  *
  * @constructor
- * @param {Cube} coordinate
+ * @param {Cube} coordinate triplet (x , y, z)
  * @param {number} hexagonSideSize - Side length from the hexagon.
  */
 function Hexagon(coordinate, hexagonSideSize) {
@@ -75,7 +74,7 @@ Axial.prototype.toCubefromOffset_OddR = function() {
 };
 
 /**
- * Cube Coordinate
+ * Cube Coordinate aka 3D.
  *
  * @constructor
  * @param x
@@ -91,7 +90,7 @@ Cube.prototype.toString = function() {
     return "x:" + this.x.toString() + "y:" + this.y.toString() + "z:" + this.z.toString();
 }
 /**
- * Converts cube coordinate into an axial coordinate.
+ * Converts cube coordinate into axial coordinate.
  * @returns {Axial}
  */
 Cube.prototype.toAxial = function() {
@@ -99,7 +98,7 @@ Cube.prototype.toAxial = function() {
 };
 
 /**
- * Convert cube coordinate into an easy for canvas coordinates
+ * Converts cube coordinates to "easy" canvas coordinates.
  * @returns {Axial}
  */
 Cube.prototype.toOffset_OddR = function () {
@@ -107,6 +106,11 @@ Cube.prototype.toOffset_OddR = function () {
     var r = this.z;
     return new Axial(q, r);
 };
+/**
+ * Rounds a floating point cube into the nearest integer cube.
+ * @param cube
+ * @returns {Cube}
+ */
 cube_round = function(cube) {
     var rx = Math.round(cube.x);
     var ry = Math.round(cube.y);
@@ -130,7 +134,7 @@ cube_round = function(cube) {
 }
 
 /**
- * Calculates the center of a Hexagon in canvas representation.
+ * Calculates the center of a Hexagon in canvas representation for a Odd Row Map
  *
  * @constructor
  * @param {Cube} coordinate
@@ -138,7 +142,7 @@ cube_round = function(cube) {
  * @returns {Axial}
  */
 hex_center = function(coordinate, size) {
-    console.log("Called: "+Date.now());
+    //Todo Remove Magic and Unicorns
     var hex = coordinate.toOffset_OddR();
     var height = size  * 2;
     var width = Math.sqrt(3)/ 2 * height ;
@@ -263,7 +267,7 @@ drawHexagonSide = function (ctx , first, second, color) {
 };
 
 /**
- * Draws the border of the field.
+ * Draws the Hexagon's border.
  *
  * @param {CanvasRenderingContext2D} ctx - Canvas 2d context.
  * @param hex
@@ -272,24 +276,19 @@ drawHexagonSides = function (ctx, hex) {
     //TODO: Refactor
     ctx.save();
     for (var i = 0; i < hex.bordersColor.length; i++) {
-        var second = null;
-        if (i + 1 < hex.bordersColor.length) {
-            second = hex.corners[i+1];
-        } else {
-            second = hex.corners[0];
-        }
+        var second = hex.corners[(i+1) % hex.bordersColor.length];
         drawHexagonSide(ctx,hex.corners[i],second, hex.bordersColor[i])
     }
     ctx.restore();
 };
 
 /**
- *
+ * Something about clipping
  * @param ctx
  * @param hex
  */
 setHexagonSides = function(ctx, hex) {
-    //TODO: Refactor
+    //TODO: Refactor -- Magic & Unicorns
     setHexagonSide(ctx, hex.corners[0], hex.corners[1], true, false);
     setHexagonSide(ctx, hex.corners[1], hex.corners[2], false, false);
     setHexagonSide(ctx, hex.corners[2], hex.corners[3], false, false);
@@ -300,10 +299,10 @@ setHexagonSides = function(ctx, hex) {
 };
 
 /**
- * Draws the field background.
+ * Draws the Hexagon Background.
  *
  * @param {CanvasRenderingContext2D} ctx - Canvas 2d context.
- * @param hex
+ * @param {Hexagon} hex
  */
 drawHexagonBackground = function (ctx, hex) {
     if (hex.bgImg != null) {
@@ -315,6 +314,11 @@ drawHexagonBackground = function (ctx, hex) {
     }
 };
 
+/**
+ * Draws the Hexagon Background.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {Hexagon} hex
+ */
 drawForeground = function (ctx, hex) {
     ctx.save();
     ctx.font="12px Consolas";
@@ -332,6 +336,11 @@ drawForeground = function (ctx, hex) {
     ctx.restore();
 };
 
+/**
+ * Draws a 'Grid' on the Hexagons
+ * @param ctx
+ * @param hex
+ */
 drawTestGrid = function (ctx, hex) {
     ctx.save();
     var color = 'white';
